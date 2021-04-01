@@ -71,9 +71,7 @@ KyutGrill=homepage2.jpg
 								<i class="user icon status-icon"></i>
 							</div>
 							<div class="twelve wide column">
-								{{ range $key, $value := (qb "SELECT COUNT(*) FROM users WHERE privileges >= 3") }}
-								<p class="status-head">{{ rediget "ripple:online_users" }} / {{ $value }}</p>
-								{{ end }}
+								<p class="status-head">{{ rediget "ripple:online_users" }} / {{ .T "%s" (rediget "ripple:registered_users")}}</p>
 								<p class="status-footer">{{ .T "Online / Registered" }}</p>
 							</div>
 						</div>
