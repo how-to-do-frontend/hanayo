@@ -4,7 +4,7 @@
 		{{ $aoba := eq .UserID 1000 }}
 		{{ $gqm := atoi (.Gin.Query "mode") }}
 		{{ $global := . }}
-		{{ with (.Get "users/apfull?id=%d" .UserID) }}
+		{{ with (.Get "users/full?id=%d" .UserID) }}
 			{{ $favouritemode := _or $gqm .favourite_mode }}
 			<script>
 				window.favouriteMode = {{ $favouritemode }};
@@ -159,7 +159,7 @@ starteffect()
 				</div>
 				<div class="magic table floating right">
 					<div class="table element">
-						{{ range $k, $v := (slice .std .taiko .ctb .mania) }}
+						{{ range $k, $v := (slice .stats.ap.std .stats.ap.taiko .stats.ap.ctb .stats.ap.mania) }}
 							<h1 data-mode="{{ $k }}"{{ if ne $k (int $favouritemode) }} hidden{{ end }}>{{ with and $v $v.global_leaderboard_rank }}#{{ . }}{{ else }}{{ $global.T "Not ranked" }}{{ end }}</h1>
 						{{ end }}
 						<div id="profile-actions">
@@ -262,7 +262,7 @@ starteffect()
 							{{ end }}
 						</div>
 						<div class="column">
-							{{ range $k, $v := (slice .std .taiko .ctb .mania) }}
+							{{ range $k, $v := (slice .stats.ap.std .stats.ap.taiko .stats.ap.ctb .stats.ap.mania) }}
 							{{ $maxcombo := qb "SELECT FORMAT(scores_relax.max_combo,0) AS combo FROM scores_relax WHERE userid = ? ORDER BY max_combo DESC;" $.UserID}}
 								<div data-mode="{{ $k }}" {{ if ne $k (int $favouritemode) }} hidden{{ end }}>
 									<table class="ui very basic two column compact table nopad">

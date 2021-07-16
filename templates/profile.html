@@ -159,7 +159,7 @@ starteffect()
 				</div>
 				<div class="magic table floating right">
 					<div class="table element">
-						{{ range $k, $v := (slice .std .taiko .ctb .mania) }}
+						{{ range $k, $v := (slice .stats.vn.std .stats.vn.taiko .stats.vn.ctb .stats.vn.mania) }}
 							<h1 data-mode="{{ $k }}"{{ if ne $k (int $favouritemode) }} hidden{{ end }}>{{ with and $v $v.global_leaderboard_rank }}#{{ . }}{{ else }}{{ $global.T "Unknown" }}{{ end }}</h1>
 						{{ end }}
 						<div id="profile-actions">
@@ -262,7 +262,7 @@ starteffect()
 							{{ end }}
 						</div>
 						<div class="column">
-							{{ range $k, $v := (slice .std .taiko .ctb .mania) }}
+							{{ range $k, $v := (slice .stats.vn.std .stats.vn.taiko .stats.vn.ctb .stats.vn.mania) }}
 							{{ $maxcombo := qb "SELECT FORMAT(scores.max_combo,0) AS combo FROM scores WHERE userid = ? ORDER BY max_combo DESC;" $.UserID}}
 								<div data-mode="{{ $k }}" {{ if ne $k (int $favouritemode) }} hidden{{ end }}>
 									<table class="ui very basic two column compact table nopad">
