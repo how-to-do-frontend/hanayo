@@ -17,7 +17,7 @@ import (
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
-	"github.com/russross/blackfriday"
+	//"github.com/russross/blackfriday"
 	"github.com/thehowl/qsql"
 	"golang.org/x/oauth2"
 	"zxq.co/ripple/go-discord-oauth"
@@ -229,19 +229,19 @@ var funcMap = template.FuncMap{
 		return nil, errors.New("y must be at maximum 1 parameter")
 	},
 	// blackfriday passes some markdown through blackfriday.
-	"blackfriday": func(m string) template.HTML {
+	//"blackfriday": func(m string) template.HTML {
 		// The reason of m[strings.Index...] is to remove the "header", where
 		// there is the information about the file (namely, title, old_id and
 		// reference_version)
-		return template.HTML(
-			blackfriday.Run(
-				[]byte(
-					m[strings.Index(m, "\n---\n")+5:],
-				),
-				blackfriday.WithExtensions(blackfriday.CommonExtensions),
-			),
-		)
-	},
+	//	return template.HTML(
+	//		blackfriday.Run(
+	//			[]byte(
+	//				m[strings.Index(m, "\n---\n")+5:],
+	//			),
+	//			blackfriday.WithExtensions(blackfriday.CommonExtensions),
+	//		),
+	//	)
+	//},
 	// i is an inline if.
 	// i (cond) (true) (false)
 	"i": func(a bool, x, y interface{}) interface{} {
