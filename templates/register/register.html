@@ -29,19 +29,23 @@
 							<input tabindex="2" type="password" name="password" placeholder="{{ .T "Password" }}" value="{{ .FormData.password }}" required pattern="^.{8,}$">
 						</div>
 						<div class="field">
+							<label>{{ .T "Access Key" }}</label>
+							<input tabindex="3" type="text" name="access_key" placeholder="{{ .T "Access Key" }}" value="{{ .FormData.access_key }}">
+						</div>
+						<div class="field">
 							<label>{{ .T "Email" }}</label>
-							<input tabindex="3" type="email" name="email" placeholder="{{ .T "Email" }}" value="{{ .FormData.email }}" required>
+							<input tabindex="4" type="email" name="email" placeholder="{{ .T "Email" }}" value="{{ .FormData.email }}" required>
 						</div>
 						{{ with config "RecaptchaSite" }}
 						<div class="field">
-							<div class="g-recaptcha" data-sitekey="{{ . }}" data-theme="dark"></div>
+							<div class="g-recaptcha" data-sitekey="{{ . }}"></div>
 						</div>
 						{{ end }}
 						{{ ieForm .Gin }}
 					</form>
 				</div>
 				<div class="ui right aligned segment">
-					<button tabindex="4" class="ui primary button" type="submit" form="register-form">{{ .T "Submit" }}</button>
+					<button tabindex="5" class="ui primary button" type="submit" form="register-form">{{ .T "Submit" }}</button>
 				</div>
 			</div>
 		</div>

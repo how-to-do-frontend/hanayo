@@ -16,10 +16,9 @@ KyutGrill=leaderboard2.jpg
 		if (country.length != 2)
 			country = "";
 	</script>
-	<div class="ui three item menu" id="rx-menu">
-			<a class="0 item" data-rx="0" href="/leaderboard?rx=0">Regular</a>
-			<a class="1 item" data-rx="1" href="/leaderboard?rx=1">Relax</a>
-			<a class="1 item" data-rx="2" href="/leaderboard?rx=2">Autopilot</a>
+	<div class="ui two item menu" id="rx-menu">
+			<a class="0 item rx-button" data-rx="0" href="/leaderboard?rx=0">Vanilla</a>
+			<a class="1 item rx-button" data-rx="1" href="/leaderboard?rx=1">Relax</a>
 	</div>
 
 	<div class="ui four item menu" id="mode-menu">
@@ -29,13 +28,12 @@ KyutGrill=leaderboard2.jpg
 	</div>
 	<div class="ui twelve item stackable menu">
 		{{ range countryList 11 }}
-			<a class="item lb-country" data-country="{{ . }}"><i class="{{ . }} flag nopad"></i></a>
+			<a class="item lb-country" data-country="{{ . }}">{{ country . false 50 33 }}</a>
 		{{ end }}
 		<a class="item" id="country-chooser-modal">...</a>
 	</div>
 	<table class="ui fixed table">
 		<thead>
-			{{ template "simplepag" 5 }}
 			<tr>
 				<th class="two wide"> {{ .T "Rank" }} </th>
 				<th class="four wide">{{ .T "Player" }} </th>
@@ -47,7 +45,27 @@ KyutGrill=leaderboard2.jpg
 		<tbody>
 		</tbody>
 		<tfoot>
-			{{ template "simplepag" 5 }}
+			{{/* easy access */}}
+			{{ $page := .Gin.Query "p" | atoint | atLeastOne }}
+			<div class="simplepag">
+				<div class="ui container">
+					<div class="ui floated pagination menu center">
+						<a class="purple icon item" href="/leaderboard?mode={{ $favMode }}&rx=0&p={{ sub $page 1 }}">
+							<i class="fa fa-chevron-double-left" style="color: grey;"></i>
+						</a>
+					</div>
+					<div class="ui floated pagination menu center">
+						<a class="purple icon item">
+							{{ $page }}
+						</a>
+					</div>
+					<div class="ui floated pagination menu center">
+						<a class="purple icon item" href="/leaderboard?mode={{ $favMode }}&rx=0&p={{ add $page 1 }}">
+							<i class="fa fa-chevron-double-right" style="color: grey;"></i>
+						</a>
+					</div>
+				</div>
+			</div>
 		</tfoot>
 	</table>
 	<div class="ui modal">
@@ -55,7 +73,7 @@ KyutGrill=leaderboard2.jpg
 			<div class="ui four column grid">
 				{{ range countryList 500 }}
 					{{ $short := . }}
-					{{ with country . true }}
+					{{ with country . true 20 13 }}
 						<div class="ui clickable column lb-country" data-country="{{ $short }}">{{ . }}</div>
 					{{ end }}
 				{{ end }}

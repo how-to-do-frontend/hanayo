@@ -16,11 +16,11 @@ msgstr ""
 
 # JavaScript
 msgid ""
-"An error occurred while contacting the RealistikOsu! API. Please report this to a "
-"RealistikOsu! developer."
+"An error occurred while contacting the Osu!Italia API. Please report this to a "
+"Osu!Italia developer."
 msgstr ""
-"A apărut o eroare în timpul contactului cu API-ul Ripple. Te rugăm sa "
-"raportezi această eroare la un developer Ripple."
+"A apărut o eroare în timpul contactului cu API-ul Osu!Italia. Te rugăm sa "
+"raportezi această eroare la un developer Osu!Italia."
 
 # This is a quote of UNDERTALE if you didn't know.
 # It is shown regarding the level of an user, but it is shortened to "Lv.".

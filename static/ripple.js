@@ -87,6 +87,7 @@ var singlePageSnippets = {
         disableSimplepagButtons(data.users.length < 50);
       });
     }
+
     function scoreOrPP(s, pp) {
       if (pp === 0)
         return "<b>" + addCommas(s) + "</b>";
@@ -129,7 +130,88 @@ var singlePageSnippets = {
         loadLeaderboard();
       });
   },
+  "/clans" : function() {
+    page = page === 0 ? 1 : page;
 
+    function loadClanLeaderboard() {
+      var wl = window.location;
+      window.history.replaceState(
+        '', document.title,
+        wl.pathname + "?m=" + favouriteMode + "&p=" + page + wl.hash);
+      api("clans/stats/all", {
+        m : favouriteMode,
+        p : page,
+        rx : rx,
+      },
+      function(data) {
+        var tb = $(".ui.table tbody");
+        tb.find("tr").remove();
+        if (data.users == null) {
+          disableSimplepagButtons(true);
+          data.users = [];
+        }
+        var i = 0;
+        data.users.forEach(function(v) {
+          tb.append($("<tr />").append(
+            $("<td />").text("#" + ((page - 1) * 50 + (++i))),
+            $("<td />").html("<a href='/u/" + v.id +
+                                   "' title='View profile'><i class='" +
+                                   v.country.toLowerCase() + " flag'></i>" +
+                                   escapeHTML(v.username) + "</a>"),
+            $("<td />").html(
+              scoreOrPP(v.chosen_mode.ranked_score, v.chosen_mode.pp)),
+            $("<td />").text(v.chosen_mode.accuracy.toFixed(2) + "%"),
+            // bonus points if you get the undertale joke
+            $("<td />").html(addCommas(v.chosen_mode.playcount) +
+                                   " <i title='" + T("Why, LOVE, of course!") +
+                                   "'>(lv. " + v.chosen_mode.level.toFixed(0) +
+                                   ")</i>")));
+        });
+        disableSimplepagButtons(data.users.length < 50);
+      });
+    }
+    function scoreOrPP(s, pp) {
+      if (pp === 0)
+        return "<b>" + addCommas(s) + "</b>";
+      return "<b>" + addCommas(pp) + "pp</b> (" + addCommas(s) + ")"
+    }
+
+    // country stuff
+    $("#country-chooser-modal")
+      .click(function() {
+        $(".ui.modal").modal("show");
+      });
+    $(".lb-country")
+      .click(function() {
+        country = $(this).data("country");
+        page = 1;
+        $(".ui.modal").modal("hide");
+        loadLeaderboard();
+      });
+
+    loadLeaderboard();
+    setupSimplepag(loadClanLeaderboard);
+    $("#mode-menu .item")
+      .click(function(e) {
+        e.preventDefault();
+        $("#mode-menu .active.item").removeClass("active");
+        $(this).addClass("active");
+        favouriteMode = $(this).data("mode");
+        country = "";
+        page = 1;
+        loadClanLeaderboard();
+      });
+    $("#rx-menu .item")
+      .click(function(e) {
+        e.preventDefault();
+        $("#rx-menu .active.item").removeClass("active");
+        $(this).addClass("active");
+        country = "";
+        page = 1;
+        rx = $(this).data("rx");
+        loadClanLeaderboard();
+      });
+  },
   "/friends" : function() {
     $(".smalltext.button")
       .click(function() {
@@ -538,7 +620,7 @@ function _api(base, endpoint, data, success, failure, post, handleAllFailures) {
   handleAllFailures = (typeof handleAllFailures !== undefined) ? handleAllFailures : false;
 
   var errorMessage =
-      "An error occurred while contacting the RealistikOsu! API. Please report this to a RealistikOsu! developer.";
+      "An error occurred while contacting the osu!indonesia API. Please report this to an osu!indonesia developer.";
 
   $.ajax({
     method : (post ? "POST" : "GET"),

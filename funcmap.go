@@ -112,6 +112,14 @@ var funcMap = template.FuncMap{
 		i, _ := strconv.Atoi(s)
 		return i
 	},
+	// sub subtracts a number from another. used for pagination
+	"sub": func(num1 int, num2 int) int {
+		return num1 - num2
+	},
+	// add sums two numbers. used for pagination
+	"add": func(num1 int, num2 int) int {
+		return num1 + num2
+	},
 	// parseUserpage compiles BBCode to HTML.
 	"parseUserpage": func(s string) template.HTML {
 		return template.HTML(bbcode.Compile(s))
@@ -145,7 +153,7 @@ var funcMap = template.FuncMap{
 	},
 	// countryReadable converts a country's ISO name to its full name.
 	"countryReadable": countryReadable,
-	"country": func(s string, name bool) template.HTML {
+	"country": func(s string, name bool, width int, height int) template.HTML {
 		var c string
 		if name {
 			c = countryReadable(s)
@@ -153,7 +161,7 @@ var funcMap = template.FuncMap{
 				return ""
 			}
 		}
-		return template.HTML(fmt.Sprintf(`<i class="%s flag"></i>%s`, strings.ToLower(s), c))
+		return template.HTML(fmt.Sprintf(`<img style="width:%dpx;height:%dpx;" src="/static/flags/%s.png" title="%s"></img>		%s`, width, height, strings.ToLower(s), countryReadable(s), c))
 	},
 	// humanize pretty-prints a float, e.g.
 	//     humanize(1000) == "1,000"
@@ -404,7 +412,8 @@ var funcMap = template.FuncMap{
 	},
 	// calculateDonorPrice calculates the price of x donor months in POUNDS I THINK.
 	"calculateDonorPrice": func(a float64) string {
-		return fmt.Sprintf("%.2f", math.Pow(a*30*0.2, 0.7))
+		price := a * 2
+		return fmt.Sprintf("%.2f", price)
 	},
 	// is2faEnabled checks 2fa is enabled for an user
 	"is2faEnabled": is2faEnabled,
@@ -479,7 +488,7 @@ var funcMap = template.FuncMap{
 		return langInfo{}
 	},
 	"countryList": func(n int64) []string {
-		return rd.ZRevRange("hanayo:country_list", 0, n-1).Val()
+		return rd.LRange("hanayo:countryList", 0, n-1).Val()
 	},
 	"documentationFiles": doc.GetDocs,
 	"documentationData": func(slug string, language string) doc.File {

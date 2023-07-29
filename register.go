@@ -74,6 +74,14 @@ func registerSubmit(c *gin.Context) {
 		return
 	}
 
+	// check if valid access key
+	access_key := strings.TrimSpace(c.PostForm("access_key"))
+	if db.QueryRow("SELECT 1 FROM access_keys WHERE access_key = ?", access_key).
+		Scan(new(int)) == sql.ErrNoRows {
+		registerResp(c, errorMessage{T(c, "Invalid access key!")})
+		return
+	}
+
 	// check whether username already exists
 	if db.QueryRow("SELECT 1 FROM users WHERE username_safe = ?", safeUsername(username)).
 		Scan(new(int)) != sql.ErrNoRows {
@@ -119,7 +127,7 @@ func registerSubmit(c *gin.Context) {
 		return
 	}
 	lid, _ := res.LastInsertId()
-
+	res, err = db.Exec("DELETE FROM `access_keys` WHERE access_key = ?", access_key)
 	res, err = db.Exec("INSERT INTO `users_stats`(id, username, user_color, user_style, ranked_score_std, playcount_std, total_score_std, ranked_score_taiko, playcount_taiko, total_score_taiko, ranked_score_ctb, playcount_ctb, total_score_ctb, ranked_score_mania, playcount_mania, total_score_mania) VALUES (?, ?, 'black', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", lid, username)
 	res, err = db.Exec("INSERT INTO `rx_stats`(id, username, user_color, user_style, ranked_score_std, playcount_std, total_score_std, ranked_score_taiko, playcount_taiko, total_score_taiko, ranked_score_ctb, playcount_ctb, total_score_ctb, ranked_score_mania, playcount_mania, total_score_mania) VALUES (?, ?, 'black', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", lid, username)
 	res, err = db.Exec("INSERT INTO `ap_stats`(id, username, user_color, user_style, ranked_score_std, playcount_std, total_score_std, ranked_score_taiko, playcount_taiko, total_score_taiko, ranked_score_ctb, playcount_ctb, total_score_ctb, ranked_score_mania, playcount_mania, total_score_mania) VALUES (?, ?, 'black', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);", lid, username)

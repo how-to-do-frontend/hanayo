@@ -8,12 +8,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>{{ if .TitleBar }}{{ .T .TitleBar }} - {{ end }}RealistikOsu!</title>
+		<title>{{ if .TitleBar }}{{ .T .TitleBar }} | {{ end }}osu!indonesia</title>
 
 		<link rel="stylesheet" type="text/css" href="/static/{{ if $ds }}dark/{{ end }}semantic.min.css?{{ unixNano }}">
-		<link rel="stylesheet" type="text/css" href="/static/ripple.css?{{ unixNano }}">
 		<link rel="stylesheet" type="text/css" href="/static/snow/snow.css?{{ unixNano }}">
 		<link rel="stylesheet" href="/static/css/uniformityrightlads.css">
+		<link rel="stylesheet" type="text/css" href="/static/ripple.css?{{ unixNano }}">
+		<link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
 		<!--LOADING BARZZZ-->
 		<script src="/static/js/pace.min.js"></script>
 		<link href="/static/css/loadingbar.css" rel="stylesheet" />
@@ -36,21 +37,15 @@
 			{{ end }}>
 			{{ template "navbar" . }}
 			{{ if not .DisableHH }}
+			<!-- TODO: fuckin hell this is a bloody mess -->
 				<div class="huge heading {{ if .HeadingOnRight }}right{{ end }} dropped"
-					style="background-image: url('{{ if .KyutGrillAbsolute }}{{ .KyutGrill }}{{ else }}/static/headers/{{ or .KyutGrill "default.jpg" }}{{ end }}');">
-					<div id="snow-container">
+					style="position:relative;z-index:-1;">
+					<div id="snow-container" style="background-image: url('{{ if .KyutGrillAbsolute }}{{ .KyutGrill }}{{ else }}/static/headers/{{ or .KyutGrill "default.jpg" }}{{ end }}');filter:blur(4px) brightness(50%);z-index:0;background-repeat: no-repeat;background-position: center bottom;background-size: cover;">
 						<div>
-							<div class="snow large"></div>
-							<div class="snow large delayed"></div>
-							
-							<div class="snow medium"></div>
-							<div class="snow medium delayed"></div>
-							
-							<div class="snow small"></div>
-							<div class="snow small delayed"></div>
+							<!-- Here for blur shit. Fuck snow. -->
 						</div>
 					</div>
-					<div class="ui container">
+					<div class="ui container" style="z-index:1;">
 						<h1>{{ if .HeadingTitle }}{{ .T .HeadingTitle | html }}{{ else }}{{ .T .TitleBar }}{{ end }}</h1>
 					</div>
 				</div>
@@ -80,12 +75,12 @@
 				{{ end }}
 				{{ with $settings.game_maintenance.Int }}
 					<div class="ui warning message">
-						{{ $.T "RealistikOsu!'s score submission is currently in maintenance mode. You will not be allowed to submit scores for the time being." }}
+						{{ $.T "osu!indonesia's score submission is currently in maintenance mode. You will not be allowed to submit scores for the time being." }}
 					</div>
 				{{ end }}
 				{{ with $settings.website_maintenance.Int }}
 					<div class="ui warning message">
-						{{ $.T "The RealistikOsu! website is currently in maintenance mode. Only certain users are allowed to access the full website." }}
+						{{ $.T "The osu!indonesia website is currently in maintenance mode. Only certain users are allowed to access the full website." }}
 					</div>
 				{{ end }}
 				</div>
@@ -93,50 +88,25 @@
 			</div>
 
 		</div>
-
-		<div class="footer-bg">
-			<div class="ui container">
-				<div class="ui internally celled grid">
-					<div class="row">
-						<div class="three wide column">
-							<div class="footer-info-block">
-								<a class="footer-title">Help</a> 
-								<ul style="list-style-type: none; padding: 0; margin: 0;">
-									<li>
-										<i><a href="https://dl.ussr.pl/files/osu/ROS.exe">Server Switcher</a></i>
-										<i><a href="https://ussr.pl/doc">Documentation</a></i>
-									</li>
-								</ul>
-							</div> 
-						</div>
-						<div class="three wide column">
-							<div class="footer-info-block">
-								<a class="footer-title">Social</a>
-								<ul style="list-style-type: none; padding: 0; margin: 0;">
-									<li>
-										<i><a href="https://discord.gg/87E2K46" target="_blank">Discord</a></i>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="seven wide column">
-							<div class="footer-info-block">
-								<a class="footer-title">Source Code</a>
-								<ul style="list-style-type: none; padding: 0; margin: 0;">
-									<li>
-										<i><a href="https://github.com/RealistikOsu" target="_blank">GitHub</a></i>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="footer-logo">
-							<span style="color: white; font-size: 30px;">RealistikOsu!</span> 
-							<br>
-							<a class="subtitle" style="font-size: 15px; color: white;">osu! private server</a>
-						</div>
-					</div>
+		<div class="footer {{ if $ds }}dark{{ end }}">
+			{{ .T "&copy; 2023-present osu!indonesia, using Hanayo %s." (version) | html }}
+			<a href="/team" title="{{ .T "Who is working on this thing?" }}"><i class="users icon"></i>{{ .T "Team" }}</a> |
+			<div class="ui scrolling dropdown" style="margin-left: 5px;" id="language-selector">
+				{{ $lang := .Context.Language }}
+				{{ with $lang }}
+					{{ $info := languageInformationByNameShort . }}
+					<div class="text"><i class="{{ $info.CountryShort }} flag"></i>{{ $info.Name }}</div>
+				{{ else }}
+					<div class="default text">{{ .T "Language" }}</div>
+				{{ end }}
+				<i class="dropdown icon"></i>
+				<div class="menu">
+					{{ range languageInformation }}
+						<div class="{{ if eq .NameShort $lang }}selected {{ end }}item" data-lang="{{ .NameShort }}"><i class="{{ .CountryShort }} flag"></i>{{ .Name }}</div>
+					{{ end }}
 				</div>
 			</div>
+		</div>
 		<script>
 			var hanayoConf = {
 				avatars:   {{ .Conf.AvatarURL }},
@@ -151,6 +121,7 @@
 		<script src="//twemoji.maxcdn.com/2/twemoji.min.js?2.2"></script>
 		<script src="/static/dist.min.js?{{ unixNano }}"></script>
 		<script src="/static/timeago-locale/jquery.timeago.en.js"></script>
+		<script src="/static/nav.js"></script>
 		{{ if .Scripts }}
 			{{ range .Scripts }}
 				<script src="{{ . }}?{{ unixNano }}"></script>

@@ -1,3 +1,7 @@
-.ui.menu {
-    background-color: #212121c2;
+.ui.menu:not(.navbar) {
+    background-color: #1b1c1dc2!important;
+}
+
+.rx-button:hover {
+    background-color: #4d4d4dc2!important;
 }

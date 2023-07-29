@@ -21,6 +21,14 @@
     text-shadow: 3px 3px #000000;
 }
 
+.text-md {
+    margin-top: 35px;
+    font-size: 28px;
+    font-weight: 250px;
+    text-shadow: 2.5px 2.5px #000000;
+    margin-bottom: 45px;
+}
+
 .text-sm {
 	margin-top: 20px;
     font-size: 14px;
@@ -29,7 +37,9 @@
     margin-bottom: 30px;
 }
 
-
+.text-center {
+    text-align: center;
+}
 @media (max-width: 768px){
 .text-lg {
     margin-top: 0px;
@@ -40,12 +50,11 @@
     border-radius: 0px;
     display: flex !important;
     justify-content: center;
-    background-color: #222;
-    margin-top: 110px;
+    background-color: hsla(0, 10%, 10%, 0.45);
     align-items: flex-end;
 	height: 400px;
     padding: 34px;
-	box-shadow: -1px 2px 2px 1px rgba(0, 0, 0, 0.51);
+	box-shadow: -1px 2px 1px -2px rgba(255, 255, 255, 0.51);
     display: inline-flex;
     /*overflow: hidden;*/
     /*woman.png adjustments by rel, noting this as these changes may break things*/
@@ -85,10 +94,6 @@
     border-radius: 0rem;
     border: 1px solid rgba(34, 36, 38, 0.15);
     color: white;
-}
-
-.ui.red.segment:not(.inverted) {
-    border-top: 2px solid #DB2828;
 }
 
 @media only screen and (max-width: 767px){
@@ -243,7 +248,6 @@ margin-bottom: 5px;
 }
 
 .home-btn {
-    background-image: url("https://akatsuki.pw/static/images/icons/button.svg");
     border: none;
     background-size: 150%;
     border-radius: 4px;
@@ -275,6 +279,20 @@ margin-bottom: 5px;
     color: #fff
 }
 
+.navbar {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    margin: 0 !important;
+    z-index: 1000;
+    background-color: transparent !important;
+}
+
+.scrolled {
+    background-color: #548aca!important;
+    opacity: .9;
+    transition: background-color 200ms linear;
+}
 
 .home-btn.btn-how:hover {
     background-color: #2eb1ee;
@@ -425,18 +443,58 @@ a.inherit:hover {
 
 
 .white.background {
-    background-image: url("image/navbar.png") !important;
+    background-color: #4C4C4C;
 }
 body.ds .white.background {
-    background-image: url("image/navbar.png") !important;
+    background-color: #4C4C4C;
+}
+/* yoinked from stisla :3 */
+/* 3.10 Pagination */
+.page-item .page-link {
+    color: #6777ef;
+    border-radius: 3px;
+    margin: 0 3px;
+}
+.page-item.active .page-link {
+    background-color: #6777ef;
+    border-color: #6777ef;
+}
+.page-item.disabled .page-link {
+    border-color: transparent;
+    background-color: #f9fafe;
+    color: #6777ef;
+    opacity: 0.6;
+}
+
+.page-link {
+    border-color: transparent;
+    background-color: #f9fafe;
+    font-weight: 600;
+}
+.page-link:hover {
+    background-color: #6777ef;
+    color: #fff;
+    border-color: transparent;
+}
+.page-link:focus {
+    box-shadow: none;
+}
+
+.profile-container {
+    margin-top: 100px !important;
 }
 
 .user.avatar {
-	float: left;
+    float: left;
 	overflow: auto;
 	margin-right: 10px;
 	display: block;
 	height: 80px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.25);
+}
+
+.rounded {
+    border-radius: 23px;
 }
 
 .ui.attached.segment {
@@ -658,6 +716,33 @@ input[type="submit"].ie {
 	display: flex;
 }
 
+/* user ranks. exclusively for profile. */
+.profile-rank-container {
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-direction: column;
+    font-size: 20px;
+    padding: 11px;
+    background: #292929e3;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    float: right;
+    margin-top: 40%;
+}
+
+.profile-rank {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-rank:hover {
+    background-color: #32323232;
+}
+
 /* A camouflaged link looks like normal text but it isn't. */
 a.camouflaged {
 	color: inherit;
@@ -705,15 +790,8 @@ img.locked-achievement:hover {
 	font-size: 25px; color: white;
 }
 .footer-bg {
-    text-shadow: -1px 2px 2px rgba(0,0,0,.33);
-    background: linear-gradient( rgba(255,255,255,0.03),rgba(255,255,255,0.03) ),url("image/background-footer.png");
-    height: 180px;
-    margin: 10px 0 -30px!important;
-    padding: 25px 0 0;
-    text-align: center;
-    flex: 0 0 auto;
-    left: 0;
-    bottom: 0;
+    background: #4C4C4C;
+    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 .ui.stackable.four.grid{
 	margin-top: 3px;
@@ -854,7 +932,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     min-width: 320px;
-    background-image: url("image/background.png");
+    background-color: #131313;
     font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
     font-size: 14px;
     line-height: 1.4285em;
@@ -880,6 +958,28 @@ body {
 }
 
 /*Rel was her*/
+.modern-button {
+    background-color: #1B1C1D;
+    border-radius: 1px;
+    height: 50px;
+    /* stolen from semantic :3 */
+    padding-left: 0!important;
+    padding-right: 0!important;
+    margin-left: 0!important;
+    margin-right: 0!important;
+    text-align: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center
+}
+
+.modern-button.selected {
+    background-color: #777;
+}
+
+.modern-button:hover {
+    background-color: hsla(0, 0%, 30%)
+}
 
 .ui[class*="top attached"].segment {
     border-radius: 0;
@@ -892,7 +992,71 @@ body {
 .ui.segments:not(.horizontal)>.segment:first-child {
     border-radius: 0;
 }
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.blue.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #2185d0;
+}
 
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.orange.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #F2711C;
+}
+
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.lblue.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #00e7ff;
+}
+
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.yellow.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #fbbd08;
+}
+
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.pink.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #e03997;
+}
+
+/* CREDIT US BITCHES OR DONT USE - realistik */
+.ui.purple.segment::before {
+    content: "";
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    box-shadow: 0 0 5px 1px #a333c8;
+}
 .ui.menu {
     border-radius: 0;
 }

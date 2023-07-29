@@ -1,6 +1,6 @@
 {{/*###
 Handler=/donate
-TitleBar=Support RealistikOsu!
+TitleBar=Support Osu!Italia
 KyutGrill=donate2.png
 AdditionalJS=https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.js
 */}}
@@ -93,20 +93,12 @@ AdditionalJS=https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.
 			</div>
 			{{ if $global.User.ID }}
 				<h4 class="ui horizontal divider header">
-					{{ $.T "And this is how you pay" }}
+					{{ $.T "I'm convinced!" }}
 				</h4>
-				<p>
-					{{ $.T "You may donate via <b>PayPal</b> (or credit/debit card linked to PayPal). Use the slider below to choose the amount of months you'd like to have the donor benefits, and the cost will be instantly calculated. Remember that if, for instance, you choose to donate £ 4 instead of £ 3.51, you will only be given one donor month." | html }}
-				</p>
-				<div id="months-slider" style="margin: 0 auto; max-width: 500px"></div>
-				<br>
-				<div id="cost" class="centered"><b>{{ $.T "Loading..." }}</b></div>
-				<br>
 				<div class="ui internally celled two column center aligned stackable grid">
 					<div class="column">
 						<h2 class="ui header">
-							<i class="paypal icon"></i>
-							{{ $.T "PayPal" }}
+							{{ $.T "Ko-Fi" }}
 						</h2>
 						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_self">
 							<input type="hidden" name="on0" value="Period">
@@ -116,30 +108,12 @@ AdditionalJS=https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.
 								<input type="hidden" name="option_select{{ . }}" value="{{ $months }} month{{ if . }}s{{ end }}">
 								<input type="hidden" name="option_amount{{ . }}" value="{{ calculateDonorPrice $months }}">
 							{{ end }}
-							<input type="hidden" name="on1" value="RealistikOsu! user to give donor">
-							<input type="hidden" name="custom" value="username={{ $global.User.Username }}" id="ipn-username">
-							<input type="hidden" name="amount" value="{{ calculateDonorPrice 1 }}" id="paypal-amt">
-							<div class="ui fluid labeled action input">
-								<div class="ui label">
-									{{ $.T "User:" }}
-								</div>
-								<input name="os1" type="text" placeholder="{{ $.T "User" }}" value="{{ $global.User.Username }}" id="username-input">
-								<button type="submit" class="ui blue button">{{ $.T "Submit" }}</button>
-							</div>
-							{{ $ief }}
-							<input type="hidden"
-							name="business" value="realistikosu@gmail.com">
-							<input type="hidden" name="cmd" value="_xclick">
-							<input type="hidden" name="lc" value="GB">
-							<input type="hidden" name="no_note" value="0">
-							<input type="hidden" name="currency_code" value="GBP">
-							<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-						</form>
+							<iframe id='kofiframe' src='https://ko-fi.com/osuitalia/?hidefeed=true&widget=true&embed=true&preview=true' style='border:none;width:100%;padding:4px;background:#f9f9f9;' height='712' title='osuitalia'></iframe>
 				
 				<h4 class="ui horizontal divider header">
 					{{ $.T "I've donated, now what?" }}
 				</h4>
-				{{ $.T "You'll have to wait until we verify and process your payment. It can take up to <b>12 hours</b>. If 12 hours have passed and you still haven't received your Donor tag, contact a <b>Dev/Community Manager</b> in our Discord server or send an email to <b><a href=\"mailto:realistikosu@gmail.com\">realistikosu@gmail.com</a></b>. Once we have processed your payment, you'll receive an <b>email</b> to the address you've used to sign up and you'll get <b>all the donor privileges, except the Discord ones</b>. To receive the Discord donor privileges, go to the Discord and DM any of the staff team above (and including) the support team." | html }}
+				{{ $.T "You'll have to wait until we verify and process your payment. It can take up to <b>12 hours</b>. If 12 hours have passed and you still haven't received your Donor tag, contact a <b>Dev/Community Manager</b> in our Discord server or send an email to <b><a href=\"mailto:playtoplayg@gmail.com\">playtoplayg@gmail.com</a></b>. Once we have processed your payment, you'll receive an <b>email</b> to the address you've used to sign up and you'll get <b>all the donor privileges, except the Discord ones</b>. To receive the Discord donor privileges, go to the Discord and DM any of the staff team above (and including) the support team." | html }}
 			{{ else }}
 				<div class="ui divider"></div>
 				<h1 class="ui center aligned header">{{ $.T "Please log in to get supporter" }}</h1>

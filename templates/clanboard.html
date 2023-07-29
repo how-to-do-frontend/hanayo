@@ -5,40 +5,62 @@ KyutGrill=leaderboard2.jpg
 */}}
 {{ define "tpl" }}
 <div class="ui container">
-	{{ $favMode := _or (atoi (.Gin.Query "mode")) }}
+	{{ $user := . }}
+	{{ $favModeRaw := .Get "users/self/favourite_mode" }}
+	{{ $favMode := _or (atoi (.Gin.Query "mode")) $favModeRaw.favourite_mode (float 0) }}
 	<script>
 		var favouriteMode = {{ $favMode }};
+		var rx = {{ .Gin.Query "rx" }};
 		var page = {{ .Gin.Query "p" | atoint | atLeastOne }};
+		var country = {{ .Gin.Query "country" }}.toLowerCase();
+		if (country.length != 2)
+			country = "";
 	</script>
+	<div class="ui seven item menu" id="rx-menu">
+			<a class="0 item rx-button" data-rx="0" href="/clans?rx=0">Vanilla</a>
+			<a class="1 item rx-button" data-rx="1" href="/clans?rx=1">Relax</a>
+			<a class="1 item rx-button" data-rx="2" href="/clans?rx=2">Autopilot</a>
+	</div>
+
 	<div class="ui four item menu" id="mode-menu">
-			<a class="0 item" href="/clans?mode=0">osu!</a>
-			<a class="1 item" href="/clans?mode=1">osu!taiko</a>
-			<a class="2 item" href="/clans?mode=2">osu!catch</a>
-			<a class="3 item" href="/clans?mode=3">osu!mania</a>
+		{{ range $k, $v := modes }}
+			<a class="{{ favMode $favMode $k }}item" data-mode="{{ $k }}" href="/clans?mode={{ $k }}">{{ $v }}</a>
+		{{ end }}
+	</div>
+	<div class="ui twelve item stackable menu">
+		{{ range countryList 11 }}
+			<a class="item lb-country" data-country="{{ . }}"><i class="{{ . }} flag nopad"></i></a>
+		{{ end }}
+		<a class="item" id="country-chooser-modal">...</a>
 	</div>
 	<table class="ui fixed table">
 		<thead>
-			{{ template "simplepag" 4 }}
+			{{ template "simplepag" 5 }}
 			<tr>
-				<th class="four wide">{{ .T "Rank" }} </th>
-				<th class="four wide">{{ .T "Clan" }} </th>
+				<th class="two wide"> {{ .T "Rank" }} </th>
+				<th class="four wide">{{ .T "Player" }} </th>
 				<th class="four wide">{{ .T "PP/Score" }} </th>
-				<th class="four wide">{{ .T "Playcount" }} </th>
+				<th class="three wide">{{ .T "Accuracy" }} </th>
+				<th class="three wide">{{ .T "Playcount" }} </th>
 			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			{{ template "simplepag" 5 }}
+		</tfoot>
 	</table>
-	<table class="ui fixed table">
-		<thead>
-		{{ range (.Get "clans/stats/all?m=$d" $favMode).clans }}
-			{{ if .name }}
-			<tr>
-				<th class="four wide">#{{ .rank }} </th>
-				<th class="four wide"> <a href="/c/{{ .id }}?mode={{ $favMode }}">{{ .name }}</a></th>
-				<th class="four wide">{{ .chosen_mode.pp }}pp ({{ humanize .chosen_mode.total_score }})</th>
-				<th class="four wide">{{ .chosen_mode.playcount }}</th>
-			</tr>
-			{{end}}
-			{{end}}
-			</thead>
-	</table>
+	<div class="ui modal">
+		<div class="content">
+			<div class="ui four column grid">
+				{{ range countryList 500 }}
+					{{ $short := . }}
+					{{ with country . true }}
+						<div class="ui clickable column lb-country" data-country="{{ $short }}">{{ . }}</div>
+					{{ end }}
+				{{ end }}
+			</div>
+		</div>
+	</div>
 </div>
 {{ end }}
